@@ -2,7 +2,12 @@
 
 https://docs.influxdata.com/influxdb/v1/introduction/install/
 
-To access client
+```
+sudo service influxdb start
+sudo service influxdb status
+```
+
+## To access client
 
 ```
 sudo apt-get install influxdb-client
