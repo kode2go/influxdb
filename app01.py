@@ -5,56 +5,36 @@ https://www.influxdata.com/blog/getting-started-python-influxdb/
 from influxdb import InfluxDBClient
 client = InfluxDBClient(host='localhost', port=8086)
 
-client.create_database('pyexample')
+client.create_database('pyexample2')
 
 client.get_list_database()
 
-client.switch_database('pyexample')
+client.switch_database('pyexample2')
 
 json_body = [
     {
-        "measurement": "brushEvents",
-        "tags": {
-            "user": "Carol",
-            "brushId": "6c89f539-71c6-490d-a28d-6c5d84c0ee2f"
-        },
-        "time": "2018-03-28T8:01:00Z",
-        "fields": {
-            "duration": 127
-        }
+        "measurement": "temperature",
+        "fields": {"value": 25.5}
     },
     {
-        "measurement": "brushEvents",
-        "tags": {
-            "user": "Carol",
-            "brushId": "6c89f539-71c6-490d-a28d-6c5d84c0ee2f"
-        },
-        "time": "2018-03-29T8:04:00Z",
-        "fields": {
-            "duration": 132
-        }
+        "measurement": "temperature",
+        "fields": {"value": 22.3}
     },
     {
-        "measurement": "brushEvents",
-        "tags": {
-            "user": "Carol",
-            "brushId": "6c89f539-71c6-490d-a28d-6c5d84c0ee2f"
-        },
-        "time": "2018-03-30T8:02:00Z",
-        "fields": {
-            "duration": 129
-        }
+        "measurement": "temperature",
+        "fields": {"value": 23.7}
     }
 ]
 
 client.write_points(json_body)
-results = client.query('SELECT "duration" FROM "pyexample"."autogen"."brushEvents" ')
+query = 'SELECT "value" FROM "temperature"'
+result = client.query(query)
 
-# results.raw
-print("test")
-points = results.get_points(tags={'user':'Carol'})
-print(points)
+print(result)
 
-for point in points:
-    print(point)
-    print("Time: %s, Duration: %i" % (point['time'], point['duration']))
+print("Temperature data from InfluxDB:")
+for point in result.get_points():
+    print(f"Temperature: {point['value']}")
+
+# Close the InfluxDB connection
+client.close()
