@@ -30,6 +30,10 @@ SHOW MEASUREMENTS
 ```
 
 ```
+INSERT data value=42
+```
+
+```
 SELECT * FROM data
 ```
 
